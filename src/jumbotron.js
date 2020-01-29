@@ -15,6 +15,8 @@ const Heading = (props) => {
                             <Button color="primary">Learn More</Button>
                         </p>
                     </Jumbotron>
+ 
+                     
                 </Col>
             </Row>
         </div>
