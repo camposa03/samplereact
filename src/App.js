@@ -11,9 +11,13 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
+  NavbarText,
+  Row,
+  Col,
+  Container
 } from 'reactstrap';
-import Jumbobtron from './jumbotron';
+import Heading from './Heading';
+import Sidebar from './Components/Sidebar';
 
 const App = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,10 +58,21 @@ const App = (props) => {
           <NavbarText>Sample App</NavbarText>
         </Collapse>
       </Navbar>
+      <br />
 
-      <br/>
-      <Jumbobtron />
-
+      <Container fluid="true">
+        <Row>
+          <Col xs="12" sm="12" md="2">
+            <Sidebar />
+          </Col>
+          <Col xs="12" sm="12" md="8">
+            <Heading />
+          </Col>
+          <Col xs="12" sm="12" md="2">
+             <p>Testing third column</p>
+          </Col>
+        </Row>
+      </Container>
 
     </div>
   );
