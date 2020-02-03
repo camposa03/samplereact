@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
-import { Jumbotron, Button } from 'reactstrap';
+import { Jumbotron, Button, Alert } from 'reactstrap';
 import gitHubService from './services/GithubService';
+import { Spinner } from 'reactstrap';
 
 class Heading extends Component {
 
     state = {
-        bands: []
+        isLoading: false,
+        response: {
+            message: "",
+            success: false
+        }
     }
 
-    handleClick = () => {
-        const bands = gitHubService.getMockUserProfile();
-        this.setState({ bands });
+    handleClick = async () => {
+        this.setState({ isLoading: true })
+        const response = await gitHubService.getGithubProfile();
+        this.setState({ isLoading: false });
+
+        this.setState({ response });
+        
+    }
+
+    renderItems = () => {
+        const response = this.state.response;
+
+        let display = null;
+        if (response.success) {
+            display = <li>{response.message}</li>;
+        } else if (response.message && !response.success) {
+            display = <Alert color="danger"><strong>Sorry, </strong> having trouble reaching the service. Is the service up and running?</Alert>
+                     
+        } 
+        return display;
     }
 
     render() {
-
-        const bands = this.state.bands;
-        const renderItems = () => {
-            return bands && bands.map((b, index) => <li key={index}>{b}</li>)
-        }
-
+ 
         return (
             <div>
                 <Jumbotron>
@@ -28,10 +45,12 @@ class Heading extends Component {
                     <hr className="my-2" />
                     <p>Click the button below to make an API call</p>
                     <p className="lead">
-                        <Button onClick={this.handleClick} color="primary">Get user Profile</Button>
+                        <Button disabled={this.state.isLoading} 
+                                onClick={this.handleClick}
+                                color="primary">Get user Profile</Button>
                     </p>
 
-                    {renderItems()}
+                    {this.state.isLoading ? <div><Spinner color="primary" /></div> : this.renderItems()}
                     
                 </Jumbotron>
             </div>);
